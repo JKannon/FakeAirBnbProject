@@ -1,24 +1,33 @@
-// Enum Types mini-challenge
-// Replace the value of loyaltyUser to a GOLD_USER, SILVER_USER or BRONZE_USER, making sure to
-// use what we learnt about Enums in the previous lesson. Make Sheia GOLD, Andrzej BRONZE 
-// and Omar SILVER.
-// 2. export the enum
-// 3. Fix the function in the utils to show Sheias star as she is a GOLD_USER.
-
-import { showReviewTotal, populateUser, showPropRecs } from './utils';
+// Imports
+import { showReviewTotal, populateUser, showPropRecs, showDetails } from './utils';
 import { Permissions, Loyalty } from './enums';
-const propertyContainer = document.querySelector('.properties');
-const footer = document.querySelector('.footer');
 
+
+// Variables
 let isOpen: boolean;
 
+
+// Objects
+
 // Reviews Array
-const reviews : { 
-    name: string; 
-    stars: number; 
-    loyaltyUser: Loyalty; 
-    date: Date
-    }[] = [
+
+// Could use any[] like:
+// const reviews : any[] =[{ array of review objects }]
+const reviews : ( // 7/23: more strict version of array with 2 options for object types
+    { 
+        name: string; 
+        stars: number; 
+        loyaltyUser: Loyalty; 
+        date: Date;
+    } |
+    { 
+        name: string; 
+        stars: number; 
+        loyaltyUser: Loyalty; 
+        date: Date;
+        description: string;
+    }
+    )[] = [
     {
         name: 'Sheia',
         stars: 5,
@@ -35,7 +44,8 @@ const reviews : {
         name: 'Omar',
         stars: 4,
         loyaltyUser: Loyalty.SILVER_USER,
-        date: new Date('27-03-2021'.replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
+        date: new Date('27-03-2021'.replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")),
+        description: 'Great location and convenient parking. The house was spotless and the host was very helpful and responsive.'
     },
 ];
 
@@ -50,7 +60,7 @@ const sortedDesc = reviews.sort(
 );
 
 // User Object
-const you = {
+export const you = {
     firstName: 'Bobby',
     lastName: 'Brown',
     permissions: Permissions.ADMIN,
@@ -114,15 +124,9 @@ const properties : {
     }
 ];
 
-// Functions
+// Functions Invocations
 showReviewTotal(reviews.length, sortedDesc[0].name, sortedDesc[0].loyaltyUser);
 
 populateUser(you.isReturning, you.firstName);
 
 showPropRecs(properties);
-
-// use your location, your current time, and the current temperature of your
-// location
-let currentTime: string = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-let currentLocation: [string, string, number] = ["Philadephia, PA", currentTime, 88];
-footer.innerHTML = `${currentLocation[0]} | ${currentLocation[1]} | ${currentLocation[2]}°F`;
