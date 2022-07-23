@@ -1,28 +1,59 @@
+// Imports
+import { Permissions, Loyalty } from './enums';
+import { you } from './index';
+
+// Variables
 const reviewTotalDisplay = document.querySelector('#reviews')
 const returningUserDisplay = document.querySelector('#returning-user')
 const userNameDisplay = document.querySelector('#user')
 const propertyRecsDisplay = document.querySelector('.properties');
+const propertyContainer = document.querySelector('.properties');
+const footer = document.querySelector('.footer');
 
+// Functions
 export function showPropRecs(arr){
+    // 7/23: refactored the function to create the elements via JS and not Template Literals
+    const isLoggedIn = you.isReturning;
+    const userPermissions = you.permissions;
+    
     arr.forEach((element) => {
-        propertyRecsDisplay.innerHTML += `
-            <div class="card">
-                <img src="${element.image}">
-                <h4 class="title">${element.title}</h4>
-            </div>
-        `
-    })
-}
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+            <h4 class="title">
+                ${element.title}
+            </h4>
+        `;
+        const image = document.createElement('img');
+        image.setAttribute('src', element.image);
+        card.appendChild(image);
+        propertyRecsDisplay.appendChild(card);
+        showDetails(userPermissions, card, element.price);
+    });
+};
 
-export function showReviewTotal(value: number, reviewer: string, isLoyalty: string) {
+export function showReviewTotal(value: number, reviewer: string, isLoyalty: Loyalty) {
     const goldUser = (isLoyalty === 'Gold') ? true : false;
     const iconDisplay = goldUser ? '⭐' : '';
     reviewTotalDisplay.innerHTML = `Reviews total: ${value.toString()} | Last reviewed by: ${reviewer} ${iconDisplay}`;
-}
+};
 
 export function populateUser(isReturning : boolean, userName: string ) {
     if (isReturning == true){
-        returningUserDisplay.innerHTML = 'back'
-    }
-    userNameDisplay.innerHTML = userName
-}
+        returningUserDisplay.innerHTML = 'back';
+    };
+    userNameDisplay.innerHTML = userName;
+};
+
+export function showDetails(authorityStatus: boolean | Permissions, element : HTMLDivElement, price: number) {
+   if (authorityStatus) {
+       const priceDisplay = document.createElement('div');
+       priceDisplay.innerHTML = price.toString() + '/night';
+       element.appendChild(priceDisplay);
+   };
+};
+
+// Footer
+let currentTime: string = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+let currentLocation: [string, string, number] = ["Philadephia, PA", currentTime, 88];
+footer.innerHTML = `${currentLocation[0]} | ${currentLocation[1]} | ${currentLocation[2]}°F`;
