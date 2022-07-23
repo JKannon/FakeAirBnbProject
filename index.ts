@@ -1,7 +1,7 @@
 // Imports
 import { showReviewTotal, populateUser, showPropRecs, showDetails } from './utils';
 import { Permissions, Loyalty } from './enums';
-
+import { Price, Country } from './alias';
 
 // Variables
 let isOpen: boolean;
@@ -78,7 +78,7 @@ const properties : {
         firstLine: string;
         city: string;
         code: number;
-        country: string;
+        country: Country;
     };
     contact: [ number, string ];
     isAvailable: boolean;
