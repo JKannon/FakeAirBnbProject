@@ -33,9 +33,19 @@ export function showPropRecs(arr){
 };
 
 export function showReviewTotal(value: number, reviewer: string, isLoyalty: Loyalty) {
-    const goldUser = (isLoyalty === 'Gold') ? true : false;
-    const iconDisplay = goldUser ? '⭐' : '';
-    reviewTotalDisplay.innerHTML = `Reviews total: ${value.toString()} | Last reviewed by: ${reviewer} ${iconDisplay}`;
+    const iconDisplay = (isLoyalty === 'Gold') ? '⭐' : '';
+    
+    // Line 41 is logic to add an "s" if there are multiple or 0 reviews
+    reviewTotalDisplay.innerHTML = `
+        ${value.toString()} 
+        ${(value > 1 || value === 0) ? 'reviews' : 'review'} 
+        | Last reviewed by: ${reviewer} ${iconDisplay}
+    `;
+    
+    // Could also achieve this by utilizing the makeMultiple() function on line 68:
+    /*
+        reviewTotalDisplay.innerHTML = value.toString() + ' review' + makeMultiple(value) + '| last reviewed by ' + reviewer + ' ' + iconDisplay;
+    */
 };
 
 export function populateUser(isReturning : boolean, userName: string ) {
@@ -52,6 +62,15 @@ export function showDetails(authorityStatus: boolean | Permissions, element : HT
        element.appendChild(priceDisplay);
    };
 };
+
+// makeMultiple() Function
+/* 
+    export function makeMultiple(value: number): string {
+        if (value > 1 || value == 0 ) {
+            return 's'
+        } else return ''
+    }
+*/
 
 // Footer
 let currentTime: string = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
