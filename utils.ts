@@ -1,6 +1,6 @@
 // Imports
 import { Permissions, Loyalty } from './enums';
-import { you } from './index';
+import { isLoggedIn, userPermissions } from './index';
 
 // Variables
 const reviewTotalDisplay = document.querySelector('#reviews')
@@ -8,27 +8,34 @@ const returningUserDisplay = document.querySelector('#returning-user')
 const userNameDisplay = document.querySelector('#user')
 const propertyRecsDisplay = document.querySelector('.properties');
 const propertyContainer = document.querySelector('.properties');
+const reviewContainer = document.querySelector('.reviews');
+const container = document.querySelector('.container');
 const footer = document.querySelector('.footer');
+const button = document.querySelector('button');
 
 // Functions
 export function showPropRecs(arr){
     // 7/23: refactored the function to create the elements via JS and not Template Literals
-    const isLoggedIn = you.isReturning;
-    const userPermissions = you.permissions;
     
     arr.forEach((element) => {
+        // Create Card
         const card = document.createElement('div');
         card.classList.add('card');
-        card.innerHTML = `
-            <h4 class="title">
-                ${element.title}
-            </h4>
-        `;
+        // Create Image
         const image = document.createElement('img');
         image.setAttribute('src', element.image);
+        // Create Title
+        const title = document.createElement('h4');
+        title.innerText = element.title;
+        title.classList.add('title');
+        const cardBreak = document.createElement('div');
+        cardBreak.classList.add('break');
+        // Appends
         card.appendChild(image);
+        card.appendChild(title);
+        card.appendChild(cardBreak);
         propertyRecsDisplay.appendChild(card);
-        showDetails(userPermissions, card, element.price);
+        showDetails(isLoggedIn, card, element.price);
     });
 };
 
@@ -58,7 +65,7 @@ export function populateUser(isReturning : boolean, userName: string ) {
 export function showDetails(authorityStatus: boolean | Permissions, element : HTMLDivElement, price: number) {
    if (authorityStatus) {
        const priceDisplay = document.createElement('div');
-       priceDisplay.innerHTML = price.toString() + '/night';
+       priceDisplay.innerHTML = `$${price.toString()} /night`;
        element.appendChild(priceDisplay);
    };
 };
@@ -71,6 +78,46 @@ export function showDetails(authorityStatus: boolean | Permissions, element : HT
         } else return ''
     }
 */
+
+let count = 0
+
+export function addReviews(array: {
+    name: string; 
+    stars: number; 
+    loyaltyUser: Loyalty; 
+    date: Date; 
+}[]) : void {
+    if (!count ) {
+        count++;
+        const topTwo = getTopTwoReviews(array);
+        for (let i = 0; i < topTwo.length; i++) {
+            const reviewCard = document.createElement('div');
+            reviewCard.classList.add('review-card');
+            reviewCard.innerHTML = `<strong>${topTwo[i].stars}★</strong> <small>from <strong>${topTwo[i].name}</strong></small>`;
+            reviewContainer.appendChild(reviewCard);
+        }
+        container.removeChild(button) 
+    }
+    console.log(count);
+}
+
+button.addEventListener('click', () => addReviews(reviews))
+
+export function getTopTwoReviews(reviews : { 
+    name: string; 
+    stars: number; 
+    loyaltyUser: Loyalty; 
+    date: Date; 
+}[]): { 
+    name: string; 
+    stars: number; 
+    loyaltyUser: Loyalty; 
+    date: Date; 
+} {
+    // ✅ Sort in Descending order (high to low) by Stars
+    const sortedStarsDesc = reviews.sort((a, b) => b.stars - a.stars);
+    return sortedStarsDesc.slice(0,2)
+}
 
 // Footer
 let currentTime: string = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
