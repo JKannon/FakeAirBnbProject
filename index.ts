@@ -1,10 +1,12 @@
 // Imports
-import { showReviewTotal, populateUser, showPropRecs, showDetails } from './utils';
+import { showReviewTotal, populateUser, showPropRecs, showDetails, getTopTwoReviews } from './utils';
 import { Permissions, Loyalty } from './enums';
 import { Price, Country } from './alias';
 
+
 // Variables
 let isOpen: boolean;
+const button = document.querySelector('button');
 
 
 // Objects
@@ -13,7 +15,7 @@ let isOpen: boolean;
 
 // Could use any[] like:
 // const reviews : any[] =[{ array of review objects }]
-const reviews : ( // 7/23: more strict version of array with 2 options for object types
+export const reviews : ( // 7/23: more strict version of array with 2 options for object types
     { 
         name: string; 
         stars: number; 
@@ -49,14 +51,14 @@ const reviews : ( // 7/23: more strict version of array with 2 options for objec
     },
 ];
 
-// ✅ Sort in Ascending order (low to high)
-const sortedAsc = reviews.sort(
-  (objA, objB) => objA.date.getTime() - objB.date.getTime(),
+// ✅ Sort in Ascending order (low to high) by Date
+const sortedDateAsc = reviews.sort(
+  (a, b) => a.date.getTime() - b.date.getTime(),
 );
 
-// ✅ Sort in Descending order (high to low)
-const sortedDesc = reviews.sort(
-  (objA, objB) => objB.date.getTime() - objA.date.getTime(),
+// ✅ Sort in Descending order (high to low) by Date
+const sortedDateDesc = reviews.sort(
+  (a, b) => b.date.getTime() - a.date.getTime(),
 );
 
 // User Object
@@ -68,6 +70,9 @@ export const you = {
     age: 35,
     stayedAt: ['florida-home', 'oman-flat', 'tokyo-bungalow']
 };
+
+export const isLoggedIn = you.isReturning;
+export const userPermissions = you.permissions;
 
 // Array of Properties
 const properties : {
@@ -125,7 +130,7 @@ const properties : {
 ];
 
 // Functions Invocations
-showReviewTotal(reviews.length, sortedDesc[0].name, sortedDesc[0].loyaltyUser);
+showReviewTotal(reviews.length, sortedDateDesc[0].name, sortedDateDesc[0].loyaltyUser);
 
 populateUser(you.isReturning, you.firstName);
 

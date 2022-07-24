@@ -2,8 +2,8 @@ body {
     display: flex;
     margin: 0;
     padding: 0;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial;
-    color: darkgrey;
+    font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial;
+    color: #676767;
     flex-direction: column;
 }
 
@@ -12,13 +12,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 120px
+    margin-bottom: 0;
 }
 
 .nav-bar {
     width: 100%;
     position: sticky;
-    background-color: white;
+    background-color: #151F33;
     box-shadow: rgb(0 0 0 / 12%) 0 1px 8px;
     display: flex;
     justify-content: space-between;
@@ -34,33 +34,82 @@ body {
 
 .user-container {
     margin: 20px;
+    color: #fff;
 }
 
 .properties {
     display: flex;
     flex-wrap: wrap;
+    padding:  20px;
+    background: #cfe0ff;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    /* margin-block-end: 20px; */
 }
 
 .card {
     width: 150px;
     margin: 5px;
-    border-radius: 20px;
-    padding: 10px;
+    padding: 20px;
+    background-color: #fff;
     box-shadow: rgb(0 0 0 / 12%) 0 1px 8px;
+    color: #363E4D;
+    border: 1px solid #efefef;
+    border-radius: 5px;
+}
+.card:hover {
+    background-color: #363E4D;
+    color: #fff;
+    border-color: #363E4D;
 }
 
 .title{
-    text-align: center;
     margin-block-start: 0.5em;
     margin-block-end: 0.5em;
 }
 
 .footer {
-    width: 100%;
     background-color: lightcoral;
-    position: fixed;
-    bottom:0;
+    position: sticky;
     text-align: center;
     padding: 30px;
     color: white;
+    border-top: 5px solid #F76B5E;
+}
+
+.review-card {
+    padding: 15px;
+    background-color: #f6c020;
+    color: #000;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.reviews {
+    display: flex;
+    padding: 10px;
+    margin: 0 0 10px;
+}
+
+.break {
+    height: 2px;
+    width: 90%;
+    background-color: #e5ecff;
+}
+.card > .break {
+    width: 35%;
+    height: 5px;
+    background-color: #F78177;
+    margin-bottom: 15px;
+}
+
+.reviews-btn{
+    background-color: #F27963;
+    padding: 10px;
+    font-weight: bold;
+    border: 0;
+    color: white;
+    text-transform: capitalize;
+    outline: none
 }
