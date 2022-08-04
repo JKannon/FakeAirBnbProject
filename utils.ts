@@ -1,6 +1,7 @@
-// Imports
+// Modules
 import { Permissions, Loyalty } from './enums';
-import { isLoggedIn, userPermissions } from './index';
+import { isLoggedIn, userPermissions, reviews, yourMainProperty } from './index';
+import { Review, Property } from './interfaces';
 
 // Variables
 const reviewTotalDisplay = document.querySelector('#reviews')
@@ -56,7 +57,7 @@ export function showReviewTotal(value: number, reviewer: string, isLoyalty: Loya
 };
 
 export function populateUser(isReturning : boolean, userName: string ) {
-    if (isReturning == true){
+    if (isReturning){
         returningUserDisplay.innerHTML = 'back';
     };
     userNameDisplay.innerHTML = userName;
@@ -81,12 +82,7 @@ export function showDetails(authorityStatus: boolean | Permissions, element : HT
 
 let count = 0
 
-export function addReviews(array: {
-    name: string; 
-    stars: number; 
-    loyaltyUser: Loyalty; 
-    date: Date; 
-}[]) : void {
+export function addReviews(array: Review[]) : void {
     if (!count ) {
         count++;
         const topTwo = getTopTwoReviews(array);
@@ -103,17 +99,7 @@ export function addReviews(array: {
 
 button.addEventListener('click', () => addReviews(reviews))
 
-export function getTopTwoReviews(reviews : { 
-    name: string; 
-    stars: number; 
-    loyaltyUser: Loyalty; 
-    date: Date; 
-}[]): { 
-    name: string; 
-    stars: number; 
-    loyaltyUser: Loyalty; 
-    date: Date; 
-} {
+export function getTopTwoReviews(reviews : Review[]): Review[] {
     // ✅ Sort in Descending order (high to low) by Stars
     const sortedStarsDesc = reviews.sort((a, b) => b.stars - a.stars);
     return sortedStarsDesc.slice(0,2)
