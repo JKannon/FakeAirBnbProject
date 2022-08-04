@@ -1,13 +1,14 @@
-// Imports
+// Modules
 import { showReviewTotal, populateUser, showPropRecs, showDetails, getTopTwoReviews } from './utils';
 import { Permissions, Loyalty } from './enums';
-import { Price, Country } from './alias';
+import { Price, Country } from './types';
+import { Review, Property } from './interfaces';
 
 
 // Variables
 let isOpen: boolean;
 const button = document.querySelector('button');
-
+const mainImageContainer = document.querySelector('.main-image');
 
 // Objects
 
@@ -15,21 +16,7 @@ const button = document.querySelector('button');
 
 // Could use any[] like:
 // const reviews : any[] =[{ array of review objects }]
-export const reviews : ( // 7/23: more strict version of array with 2 options for object types
-    { 
-        name: string; 
-        stars: number; 
-        loyaltyUser: Loyalty; 
-        date: Date;
-    } |
-    { 
-        name: string; 
-        stars: number; 
-        loyaltyUser: Loyalty; 
-        date: Date;
-        description: string;
-    }
-    )[] = [
+export const reviews : Review[] = [
     {
         name: 'Sheia',
         stars: 5,
@@ -62,7 +49,7 @@ const sortedDateDesc = reviews.sort(
 );
 
 // User Object
-export const you = {
+const you = {
     firstName: 'Bobby',
     lastName: 'Brown',
     permissions: Permissions.ADMIN,
@@ -75,19 +62,7 @@ export const isLoggedIn = you.isReturning;
 export const userPermissions = you.permissions;
 
 // Array of Properties
-const properties : {
-    image: string;
-    title: string;
-    price: number;
-    location: {
-        firstLine: string;
-        city: string;
-        code: number;
-        country: Country;
-    };
-    contact: [ number, string ];
-    isAvailable: boolean;
-}[] = [
+const properties : Property[] = [
     {
         image: 'images/colombia-property.jpg',
         title: 'Colombian Shack',
@@ -135,3 +110,22 @@ showReviewTotal(reviews.length, sortedDateDesc[0].name, sortedDateDesc[0].loyalt
 populateUser(you.isReturning, you.firstName);
 
 showPropRecs(properties);
+
+// Classes
+
+// TS Classes need to add the properties before the constructor
+class MainProperty {
+    src: string
+    title: string
+    reviews: Review[]
+    constructor(src: string, title: string, reviews: Review[]) {
+        this.src = src
+        this.title = title
+        this.reviews = reviews
+    }
+}
+
+let yourMainProperty = new MainProperty('https://www.hamstech.com/wp-content/uploads/2017/08/Interior-designing-course.jpeg', 'Italian Villa', getTopTwoReviews(reviews));
+
+// Main Image
+mainImageContainer.setAttribute("style", "background-image: url(" + yourMainProperty.src + ");background-repeat: no-repeat;");
