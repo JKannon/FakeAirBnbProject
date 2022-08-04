@@ -95,12 +95,11 @@ body {
 .break {
     height: 2px;
     width: 90%;
-    background-color: #e5ecff;
+    background-color: #F78177;
 }
 .card > .break {
     width: 35%;
     height: 5px;
-    background-color: #F78177;
     margin-bottom: 15px;
 }
 
@@ -112,4 +111,17 @@ body {
     color: white;
     text-transform: capitalize;
     outline: none
+}
+
+.main-image {
+    max-width: 100%;
+    height: 75vh;
+    background-size: cover;
+    background-position: center right;
+}
+
+@media screen and (max-width: 992px) {
+    .main-image {
+         height: 45vh;
+    }
 }
