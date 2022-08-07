@@ -1,9 +1,8 @@
 // Modules
 import { showReviewTotal, populateUser, showPropRecs, showDetails, getTopTwoReviews } from './utils';
 import { Permissions, Loyalty } from './enums';
-import { Price, Country } from './types';
 import { Review, Property } from './interfaces';
-
+import MainProperty from './classes';
 
 // Variables
 let isOpen: boolean;
@@ -124,20 +123,6 @@ showReviewTotal(reviews.length, sortedDateDesc[0].name, sortedDateDesc[0].loyalt
 populateUser(you.isReturning, you.firstName);
 
 showPropRecs(properties);
-
-// Classes
-
-// TS Classes need to add the properties before the constructor
-class MainProperty {
-    src: string
-    title: string
-    reviews: Review[]
-    constructor(src: string, title: string, reviews: Review[]) {
-        this.src = src
-        this.title = title
-        this.reviews = reviews
-    }
-}
 
 let yourMainProperty = new MainProperty(
     'images/italian-villa.jpeg', 
